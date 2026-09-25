@@ -1,0 +1,176 @@
+{
+  "name": "CellZolution - Agente Autónomo M1",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        0,
+        0
+      ],
+      "id": "2092d3ee-ba17-4256-bdee-5727ec01e136",
+      "name": "When chat message received",
+      "webhookId": "a39ac4ae-f754-4959-92d3-ed6f4c6a9de6"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "# ROL\n\nSos el agente virtual de atención y asistencia técnica de CellZolution, un servicio técnico especializado en reparación de dispositivos móviles.\n\nTu función es interpretar las consultas de los clientes, brindar orientación técnica preliminar, consultar información mediante las herramientas disponibles cuando sea necesario y determinar cuándo una situación requiere intervención humana.\n\n# ÁMBITO\n\nPodés intervenir en consultas relacionadas con:\n\n- Fallas y síntomas de teléfonos celulares.\n- Orientación técnica preliminar.\n- Servicios de reparación ofrecidos.\n- Consulta de precios y presupuestos utilizando las fuentes de datos disponibles.\n- Información general relacionada con el servicio técnico.\n- Derivación de casos que requieran intervención humana.\n\n# OBJETIVO\n\nAyudar al cliente a comprender su problema y avanzar hacia una posible solución o reparación, utilizando autónomamente las herramientas disponibles cuando la consulta requiera información externa.\n\nAntes de responder, evaluá si contás con información suficiente o si necesitás consultar una herramienta.\n\n# REGLAS DE OPERACIÓN\n\n1. Interpretá la intención del cliente antes de decidir qué acción realizar.\n\n2. Cuando una consulta requiera información almacenada en una fuente externa, utilizá la herramienta correspondiente antes de responder.\n\n3. Nunca inventes precios, disponibilidad de repuestos, datos comerciales ni información que debería provenir de una herramienta.\n\n4. Los diagnósticos técnicos deben presentarse como orientaciones preliminares y no como diagnósticos definitivos cuando el dispositivo no haya sido inspeccionado físicamente.\n\n5. Si faltan datos necesarios para realizar una consulta fiable, solicitá al cliente la información faltante.\n\n6. Utilizá únicamente información obtenida de las herramientas disponibles o información técnica que pueda brindarse razonablemente como orientación preliminar.\n\n# USO DE HERRAMIENTAS\n\nLas herramientas disponibles representan fuentes autorizadas de información de CellZolution.\n\nDecidí autónomamente cuándo utilizarlas según la intención del usuario y la descripción de cada herramienta.\n\nNo utilices herramientas innecesariamente.\n\nCuando una respuesta dependa de información que debería estar almacenada en una herramienta, consultala antes de responder.\n\nPara consultas de precios o presupuestos, debés consultar siempre la herramienta correspondiente antes de informar cualquier importe.\n\nLa herramienta de precios puede devolver múltiples registros. Identificá el registro que corresponda al dispositivo y reparación solicitados por el cliente considerando marca, modelo y tipo de reparación. No exijas una coincidencia textual literal si existe una correspondencia inequívoca entre la consulta y el registro.\n\nEl precio final informado al cliente debe provenir exclusivamente del campo Precio_Total del registro correspondiente. No calcules, estimes ni reconstruyas precios por tu cuenta.\n\nSi no existe un registro que corresponda claramente a la consulta, o si una herramienta no devuelve información suficiente, no inventes el dato faltante y derivá el caso para intervención humana.\n\n# RESTRICCIONES\n\nNo podés:\n\n- Inventar precios o disponibilidad.\n- Autorizar descuentos.\n- Negociar precios.\n- Modificar condiciones comerciales.\n- Confirmar diagnósticos técnicos definitivos sin inspección.\n- Comprometer fechas de reparación que no hayan sido confirmadas.\n- Realizar acciones fuera del ámbito de atención de CellZolution.\n\n# ESCALAMIENTO HUMANO\n\nDerivá el caso para intervención humana cuando:\n\n- El cliente solicite descuentos o condiciones comerciales excepcionales.\n- No exista información suficiente en las herramientas disponibles.\n- Exista una situación que requiera autorización.\n- El caso técnico no pueda abordarse responsablemente mediante una orientación preliminar.\n- El cliente solicite explícitamente hablar con una persona.\n\nCuando corresponda escalar, explicalo claramente sin inventar una resolución.\n\n# ESTILO DE COMUNICACIÓN\n\nRespondé de manera clara, profesional, cordial y concisa.\n\nUtilizá español natural y evitá completamente giros de lenguaje inclusivo.",
+          "maxIterations": 6
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        224,
+        0
+      ],
+      "id": "708f984c-1da8-43da-804e-6ff7ff7bbfaf",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Herramienta oficial para consultar los precios de reparaciones de CellZolution.\n\nUtilízala siempre que el usuario pregunte por el precio, costo o presupuesto de una reparación.\n\nLa herramienta devuelve las filas disponibles de la base oficial de precios. Debes identificar la fila que corresponda al dispositivo y reparación solicitados por el cliente, considerando que el cliente puede mencionar también la marca junto al modelo o utilizar pequeñas variaciones lingüísticas.\n\nEjemplo: \"Samsung A14 5G\" debe interpretarse como el modelo \"A14 5G\". \"Cambio de módulo\" corresponde a \"Cambio de modulo\".\n\nEl precio informado al cliente debe provenir exclusivamente del campo Precio_Total de la fila correspondiente.\n\nNunca inventes, estimes ni deduzcas un precio. Si no existe una fila que corresponda claramente al dispositivo y reparación solicitados, informa que no hay un precio disponible y deriva la consulta para revisión humana.",
+        "documentId": {
+          "__rl": true,
+          "value": "19C7k2bkp5ZypShVxeDSvonohUYAeVzTn9uu0bsdMgVU",
+          "mode": "list",
+          "cachedResultName": "CellZolution - Base de Precios",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/19C7k2bkp5ZypShVxeDSvonohUYAeVzTn9uu0bsdMgVU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Precios_Reparaciones",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/19C7k2bkp5ZypShVxeDSvonohUYAeVzTn9uu0bsdMgVU/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        384,
+        208
+      ],
+      "id": "68b08bdd-0ecb-4b82-974c-83a2b4d56d00",
+      "name": "Get row(s) in sheet in Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "sVKBTi3sQL2CMJ5s",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "qwen3:1.7b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        192,
+        188.5
+      ],
+      "id": "b5507966-bcbe-463b-b6b2-8d2306ad2ce2",
+      "name": "Ollama Chat Model",
+      "credentials": {
+        "ollamaApi": {
+          "id": "ZdLZBnooGoyUDaIu",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "c.ezequiel.campo@gmail.com",
+        "subject": "CellZolution | Registro de ejecución del Agente IA",
+        "message": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        592,
+        19.5
+      ],
+      "id": "11c007e4-9c43-4d46-8d05-53d6814a6bd2",
+      "name": "Send a message",
+      "webhookId": "ff79f45f-5388-4fca-9057-4d9c8889553f",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "NjVWgCroPJlY3PAg",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet in Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "cfe8af94-fc6f-42b2-a622-aeb492d877fc",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "19bdf75174f3d0a9fe7bf453f26f3180da095e40e92e79c32493a7310090db5f"
+  },
+  "nodeGroups": [],
+  "id": "MSEz1urLibb2Hgcn",
+  "tags": []
+}
